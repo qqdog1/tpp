@@ -44,6 +44,8 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
         symbol = market.replace('-', '').lower()
         if symbol in self.callback_dict.keys():
             self.callback_dict.pop(symbol)
+            message = '{"method":"UNSUBSCRIBE","params":["' + symbol + '@depth5"],"id":1}'
+            self.ws.send(message)
 
     def on_open(self):
         print("onOpen")
@@ -64,7 +66,8 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
 
     def parse_book(self, json_node):
         print(json_node)
-        print(json_node['bids'][0][0])
+        # print(json_node['bids'][0][0])
+        # self.callback_dict['']
 
 
 if __name__ == '__main__':
@@ -78,4 +81,6 @@ if __name__ == '__main__':
     connector.subscribe('BTC-USDT', callback_test)
     connector.subscribe('ETH-USDT', callback_test)
 
-    connector.stop()
+    connector.unsubscribe('ETH-USDT')
+
+    # connector.stop()
