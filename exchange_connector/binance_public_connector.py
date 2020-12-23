@@ -31,6 +31,9 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
     def start(self):
         self.ws.run_forever()
 
+    def stop(self):
+        self.ws.keep_running = False
+
     def subscribe(self, market: str, callback):
         symbol = market.replace('-', '').lower()
         self.callback_dict[symbol] = callback
@@ -74,3 +77,5 @@ if __name__ == '__main__':
 
     connector.subscribe('BTC-USDT', callback_test)
     connector.subscribe('ETH-USDT', callback_test)
+
+    connector.stop()
