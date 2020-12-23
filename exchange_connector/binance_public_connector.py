@@ -1,27 +1,29 @@
 import abc
+import threading
+import time
+
 import websocket
 
 
 class BinancePublicConnector(metaclass=abc.ABCMeta):
     def __init__(self):
+        self.connect = False
         websocket.enableTrace(True)
-        ws = websocket.WebSocketApp(
+        self.ws = websocket.WebSocketApp(
             # "wss://stream.binance.com:9443/ws/btcusdt@depth",
             "wss://stream.binance.com:9443/ws",
             on_message=self.on_message,
             on_error=self.on_error,
             on_close=self.on_close
         )
-        ws.on_open = self.on_open
-        ws.run_forever()
-
-    @property
-    def ws(self):
-        return self.ws
+        self.ws.on_open = self.on_open
 
     @property
     def is_connect(self):
-        return self.is_connect
+        return self.connect
+
+    def start(self):
+        self.ws.run_forever()
 
     def subscribe(self, market: str, callback):
         pass
@@ -31,7 +33,7 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
 
     def on_open(self):
         print("onOpen")
-        is_connect = True
+        self.connect = True
 
     def on_message(self, message):
         print(message)
@@ -45,4 +47,9 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
 
 if __name__ == '__main__':
     connector = BinancePublicConnector()
-    print(connector.is_connect)
+    t1 = threading.Thread(target=connector.start)
+    t1.start()
+
+    while True:
+        print("is connect :", connector.is_connect)
+        time.sleep(1)
