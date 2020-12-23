@@ -2,7 +2,7 @@ import abc
 import websocket
 
 
-class MaxPublicConnector(metaclass=abc.ABCMeta):
+class BinancePublicConnector(metaclass=abc.ABCMeta):
     def __init__(self):
         websocket.enableTrace(True)
         ws = websocket.WebSocketApp(
@@ -19,7 +19,11 @@ class MaxPublicConnector(metaclass=abc.ABCMeta):
     def ws(self):
         return self.ws
 
-    def subscribe(self):
+    @property
+    def is_connect(self):
+        return self.is_connect
+
+    def subscribe(self, market: str, callback):
         pass
 
     def unsubscribe(self):
@@ -27,6 +31,7 @@ class MaxPublicConnector(metaclass=abc.ABCMeta):
 
     def on_open(self):
         print("onOpen")
+        is_connect = True
 
     def on_message(self, message):
         print(message)
@@ -39,4 +44,5 @@ class MaxPublicConnector(metaclass=abc.ABCMeta):
 
 
 if __name__ == '__main__':
-    connector = MaxPublicConnector()
+    connector = BinancePublicConnector()
+    print(connector.is_connect)
