@@ -6,7 +6,8 @@ class MaxPublicConnector(metaclass=abc.ABCMeta):
     def __init__(self):
         websocket.enableTrace(True)
         ws = websocket.WebSocketApp(
-            "wss://max-stream.maicoin.com/ws",
+            # "wss://stream.binance.com:9443/ws/btcusdt@depth",
+            "wss://stream.binance.com:9443/ws",
             on_message=self.on_message,
             on_error=self.on_error,
             on_close=self.on_close
