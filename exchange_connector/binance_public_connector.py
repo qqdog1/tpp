@@ -40,9 +40,11 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
 
     def on_error(self):
         print("onerror")
+        self.connect = False
 
     def on_close(self):
         print("onclose")
+        self.connect = False
 
 
 if __name__ == '__main__':
@@ -50,6 +52,8 @@ if __name__ == '__main__':
     t1 = threading.Thread(target=connector.start)
     t1.start()
 
-    while True:
-        print("is connect :", connector.is_connect)
-        time.sleep(1)
+    while not connector.is_connect:
+        print("connect to websocket :", connector.is_connect)
+        time.sleep(0.1)
+
+    print("websocket connected")
