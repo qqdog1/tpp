@@ -14,10 +14,10 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
     def __init__(self):
         self.connect_status = False
         self.callback_dict = {}
+        self.symbol_market_dict = {}
         websocket.enableTrace(True)
         self.ws = websocket.WebSocketApp(
-            # "wss://stream.binance.com:9443/stream?streams=" + topics,
-            "wss://stream.binance.com:9443/ws",
+            'wss://stream.binance.com/stream',
             on_message=self.on_message,
             on_error=self.on_error,
             on_close=self.on_close
@@ -37,6 +37,7 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
     def subscribe(self, market: str, callback):
         symbol = market.replace('-', '').lower()
         self.callback_dict[symbol] = callback
+        self.symbol_market_dict[symbol] = market
         message = '{"method":"SUBSCRIBE","params":["' + symbol + '@depth5"],"id":1}'
         self.ws.send(message)
 
@@ -53,8 +54,10 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
 
     def on_message(self, message):
         json_node = json.loads(message)
-        if 'lastUpdateId' in json_node:
-            self.parse_book(json_node)
+        if 'stream' in json_node:
+            topic = str(json_node['stream'])
+            if 'depth' in topic:
+                self.parse_book(json_node)
 
     def on_error(self):
         print("onerror")
@@ -66,8 +69,11 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
 
     def parse_book(self, json_node):
         print(json_node)
-        # print(json_node['bids'][0][0])
-        # self.callback_dict['']
+        topic = str(json_node['stream'])
+        symbol = topic.split('@')[0]
+        market = self.symbol_market_dict[symbol]
+        self.callback_dict[symbol](market, json_node['data']['bids'][0][0], json_node['data']['bids'][0][1],
+                                   json_node['data']['asks'][0][0], json_node['data']['asks'][0][1])
 
 
 if __name__ == '__main__':
@@ -79,8 +85,8 @@ if __name__ == '__main__':
         time.sleep(0.1)
 
     connector.subscribe('BTC-USDT', callback_test)
-    connector.subscribe('ETH-USDT', callback_test)
+    # connector.subscribe('ETH-USDT', callback_test)
 
-    connector.unsubscribe('ETH-USDT')
+    # connector.unsubscribe('ETH-USDT')
 
     # connector.stop()
