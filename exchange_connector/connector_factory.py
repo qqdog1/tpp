@@ -6,15 +6,14 @@ from commons.callback import callback_test
 from commons.logger_settings import set_logger_by_config
 from exchange_connector.binance_public_connector import BinancePublicConnector
 from exchange_connector.empty_public_connector import EmptyPublicConnector
-from exchange_connector.max_public_connector import MaxPublicConnector
 
 
 class ConnectorFactory:
     BINANCE = 'binance'
-    MAX = 'max'
     EMPTY = 'empty'
 
     _instance = None
+    _connectors_dist = {}
 
     @staticmethod
     def get_instance():
@@ -24,25 +23,21 @@ class ConnectorFactory:
 
     def __init__(self):
         if ConnectorFactory._instance is not None:
-            raise Exception('can not have multiple factory')
+            raise Exception('can not have multiple instance')
         else:
             self._id = id(self)
             ConnectorFactory._instance = self
-        self.connectors_dist = {}
 
     def get_public_connector(self, name: str):
-        if name in self.connectors_dist.keys():
-            return self.connectors_dist[name]
+        if name in self._connectors_dist.keys():
+            return self._connectors_dist[name]
 
         if name == self.BINANCE:
-            self.connectors_dist[name] = BinancePublicConnector()
-            return self.connectors_dist[name]
-        elif name == self.MAX:
-            self.connectors_dist[name] = MaxPublicConnector()
-            return self.connectors_dist[name]
+            self._connectors_dist[name] = BinancePublicConnector()
+            return self._connectors_dist[name]
         elif name == self.EMPTY:
-            self.connectors_dist[name] = EmptyPublicConnector()
-            return self.connectors_dist[name]
+            self._connectors_dist[name] = EmptyPublicConnector()
+            return self._connectors_dist[name]
 
         logging.error('Unknown exchange:' + name)
 
@@ -51,7 +46,7 @@ if __name__ == '__main__':
     set_logger_by_config()
     factory = ConnectorFactory.get_instance()
     connector = factory.get_public_connector(ConnectorFactory.BINANCE)
-    factory.get_public_connector('QQ')
+    # factory.get_public_connector('QQ')
 
     t1 = threading.Thread(target=connector.start)
     t1.start()
@@ -62,4 +57,9 @@ if __name__ == '__main__':
     connector.subscribe('BTC-USDT', callback_test)
 
     # 故意在new一個instance看看
-    cf = ConnectorFactory()
+    # cf = ConnectorFactory()
+
+    # 在拿一次
+    connector2 = factory.get_public_connector(ConnectorFactory.BINANCE)
+    # unsubscribe如果成功表示singleton work
+    connector2.unsubscribe('BTC-USDT')

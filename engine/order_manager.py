@@ -4,5 +4,3 @@ class OrderManager:
 
     def cancel_order(self):
         pass
-
-

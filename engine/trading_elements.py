@@ -1,3 +1,5 @@
+# 這個物件應該要細到以strategy為單位
+# 目前就讓所有strategy共用一個
 class TradingElements:
     _order_manager = None
     _price_cache = None
