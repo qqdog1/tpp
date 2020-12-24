@@ -13,7 +13,7 @@ class ConnectorFactory:
     EMPTY = 'empty'
 
     _instance = None
-    _connectors_dist = {}
+    _connectors_dict = {}
 
     @staticmethod
     def get_instance():
@@ -29,17 +29,20 @@ class ConnectorFactory:
             ConnectorFactory._instance = self
 
     def get_public_connector(self, name: str):
-        if name in self._connectors_dist.keys():
-            return self._connectors_dist[name]
+        if name in self._connectors_dict.keys():
+            return self._connectors_dict[name]
 
         if name == self.BINANCE:
-            self._connectors_dist[name] = BinancePublicConnector()
-            return self._connectors_dist[name]
+            self._connectors_dict[name] = BinancePublicConnector()
+            return self._connectors_dict[name]
         elif name == self.EMPTY:
-            self._connectors_dist[name] = EmptyPublicConnector()
-            return self._connectors_dist[name]
+            self._connectors_dict[name] = EmptyPublicConnector()
+            return self._connectors_dict[name]
 
         logging.error('Unknown exchange:' + name)
+
+    def get_private_connector(self, name: str):
+        pass
 
 
 if __name__ == '__main__':

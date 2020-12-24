@@ -19,6 +19,9 @@ class StrategyInterface(metaclass=abc.ABCMeta):
     def stop(self):
         raise NotImplementedError
 
+    # 回傳這個strategy要交易的商品
+    # 架構會是python dict
+    # exchange name : [market array]
     @abc.abstractmethod
     def get_trading_market(self):
         raise NotImplementedError
