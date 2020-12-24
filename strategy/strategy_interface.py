@@ -1,17 +1,15 @@
 import abc
 
 
-class PublicConnectorInterface(metaclass=abc.ABCMeta):
+class StrategyInterface(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, subclass):
         return (hasattr(subclass, 'start') and
                 callable(subclass.start) and
                 hasattr(subclass, 'stop') and
                 callable(subclass.stop) and
-                hasattr(subclass, 'subscribe') and
-                callable(subclass.subscribe) and
-                hasattr(subclass, 'unsubscribe') and
-                callable(subclass.unsubscribe))
+                hasattr(subclass, 'get_trading_market') and
+                callable(subclass.get_trading_market))
 
     @abc.abstractmethod
     def start(self):
@@ -22,9 +20,5 @@ class PublicConnectorInterface(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def subscribe(self, market: str):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def unsubscribe(self, market: str):
+    def get_trading_market(self):
         raise NotImplementedError

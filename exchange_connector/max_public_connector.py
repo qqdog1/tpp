@@ -14,9 +14,11 @@ class MaxPublicConnector(metaclass=abc.ABCMeta):
         ws.on_open = self.on_open
         ws.run_forever()
 
-    @property
-    def ws(self):
-        return self.ws
+    def start(self):
+        pass
+
+    def stop(self):
+        pass
 
     def subscribe(self):
         pass
