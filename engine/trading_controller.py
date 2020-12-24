@@ -1,6 +1,5 @@
 import logging
 import threading
-
 from engine.trading_elements import TradingElements
 from strategy.strategy_factory import StrategyFactory
 from strategy.strategy_interface import StrategyInterface

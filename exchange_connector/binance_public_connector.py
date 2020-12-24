@@ -3,11 +3,9 @@ import json
 import logging
 import threading
 import time
-
+from logging.config import fileConfig
 import websocket
-
 from commons.callback import callback_test
-from commons.logger_settings import set_logger_by_config
 
 
 class BinancePublicConnector(metaclass=abc.ABCMeta):
@@ -83,7 +81,7 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
 
 
 if __name__ == '__main__':
-    set_logger_by_config()
+    fileConfig('../logging_config.txt')
 
     connector = BinancePublicConnector()
     t1 = threading.Thread(target=connector.start)

@@ -1,4 +1,4 @@
-from commons.logger_settings import set_logger_by_config
+from logging.config import fileConfig
 from engine.trading_controller import TradingController
 
 
@@ -16,7 +16,7 @@ class TradingPlatform:
 
 
 if __name__ == '__main__':
-    set_logger_by_config()
+    fileConfig('logging_config.txt')
     trading_platform = TradingPlatform()
 
     while True:

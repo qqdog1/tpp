@@ -1,9 +1,8 @@
 import logging
 import threading
 import time
-
+from logging.config import fileConfig
 from commons.callback import callback_test
-from commons.logger_settings import set_logger_by_config
 from exchange_connector.binance_public_connector import BinancePublicConnector
 from exchange_connector.empty_public_connector import EmptyPublicConnector
 
@@ -46,7 +45,7 @@ class ConnectorFactory:
 
 
 if __name__ == '__main__':
-    set_logger_by_config()
+    fileConfig('../logging_config.txt')
     factory = ConnectorFactory.get_instance()
     connector = factory.get_public_connector(ConnectorFactory.BINANCE)
     # factory.get_public_connector('QQ')
