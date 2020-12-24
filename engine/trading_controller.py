@@ -37,8 +37,8 @@ class TradingController:
         else:
             self._id = id(self)
             TradingController._instance = self
-        self._strategy_factory = StrategyFactory().get_instance()
-        self._connector_factory = ConnectorFactory().get_instance()
+        self._strategy_factory = StrategyFactory.get_instance()
+        self._connector_factory = ConnectorFactory.get_instance()
         self._trading_elements = TradingElements()
 
     def register_strategy(self, strategy_name: str):
@@ -72,4 +72,6 @@ class TradingController:
 
     def on_price_update(self, exchange_name: str, market: str,
                         buy_price: float, buy_qty: float, sell_price: float, sell_qty: float):
-        self._trading_elements.set
+        self._trading_elements.set_last_buy(exchange_name, market, buy_price, buy_qty)
+        self._trading_elements.set_last_sell(exchange_name, market, sell_price, sell_qty)
+

@@ -1,4 +1,5 @@
 import logging
+
 from engine.trading_elements import TradingElements
 from strategy.simple_strategy import SimpleStrategy
 from strategy.supported_strategy import SIMPLE

@@ -19,9 +19,10 @@ class SimpleStrategy(metaclass=abc.ABCMeta):
 
     def start(self):
         self._running_status = True
+        # while loop 可以改成讓trading controller去控制
         while self._running_status:
-            buy = self._trading_elements.get_last_buy('BTC-USDT')
-            sell = self._trading_elements.get_last_sell('BTC-USDT')
+            buy = self._trading_elements.get_last_buy(EMPTY, 'BTC-USD')
+            sell = self._trading_elements.get_last_sell(EMPTY, 'BTC-USD')
             logging.info(buy[0] + buy[1] + sell[0] + sell[1])
             time.sleep(1)
 

@@ -15,17 +15,17 @@ class TradingElements:
     def get_balance(self):
         return self._order_manager.get_balance()
 
-    def get_last_buy(self, market: str):
-        return self._price_cache.get_last_buy(market)
+    def get_last_buy(self, exchange: str, market: str):
+        return self._price_cache.get_last_buy(exchange, market)
 
-    def get_last_sell(self, market: str):
-        return self._price_cache.get_last_sell(market)
+    def get_last_sell(self, exchange: str, market: str):
+        return self._price_cache.get_last_sell(exchange, market)
 
-    def set_last_buy(self, market: str, price: float, qty: float):
-        self._price_cache.set_last_buy(market, price, qty)
+    def set_last_buy(self, exchange: str, market: str, price: float, qty: float):
+        self._price_cache.set_last_buy(exchange, market, price, qty)
 
-    def set_last_sell(self, market: str, price: float, qty: float):
-        self._price_cache.set_last_sell(market, price, qty)
+    def set_last_sell(self, exchange: str, market: str, price: float, qty: float):
+        self._price_cache.set_last_sell(exchange, market, price, qty)
 
     def send_order(self):
         return self._order_manager.send_order()

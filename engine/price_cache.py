@@ -15,11 +15,13 @@ class PriceCache:
         return [0, 0]
 
     def set_last_buy(self, exchange: str, market: str, price: float, qty: float):
-        self._last_buy[exchange] = {}
+        if exchange not in self._last_buy.keys():
+            self._last_buy[exchange] = {}
         self._last_buy[exchange][market] = [price, qty]
 
     def set_last_sell(self, exchange: str, market: str, price: float, qty: float):
-        self._last_sell[exchange] = {}
+        if exchange not in self._last_sell.keys():
+            self._last_sell[exchange] = {}
         self._last_sell[exchange][market] = [price, qty]
 
 
