@@ -23,8 +23,8 @@ if __name__ == '__main__':
         name = input('input start or stop plus strategy name: ')
         action = name.split(' ')
         if action[0] == 'start':
-            trading_platform.start_strategy(name)
-        elif:
-            trading_platform.stop_strategy(name)
+            trading_platform.start_strategy(action[1])
+        elif action[0] == 'stop':
+            trading_platform.stop_strategy(action[1])
 
 
