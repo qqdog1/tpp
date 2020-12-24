@@ -1,7 +1,9 @@
 import abc
 import json
+import logging
 import threading
 import time
+from logging.config import fileConfig
 
 import websocket
 
@@ -15,6 +17,7 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
         self.connect_status = False
         self.callback_dict = {}
         self.symbol_market_dict = {}
+        # self.logger = logging.getLogger('BinancePublicConnector')
         websocket.enableTrace(True)
         self.ws = websocket.WebSocketApp(
             'wss://stream.binance.com/stream',
@@ -49,7 +52,8 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
             self.ws.send(message)
 
     def on_open(self):
-        print("onOpen")
+        # self.logger.info('websocket connected.')
+        logging.info('websocket connected.')
         self.connect_status = True
 
     def on_message(self, message):
@@ -60,11 +64,11 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
                 self.parse_book(json_node)
 
     def on_error(self):
-        print("onerror")
+        self.logger.info('websocket on error.')
         self.connect_status = False
 
     def on_close(self):
-        print("onclose")
+        self.logger.info('websocket closed.')
         self.connect_status = False
 
     def parse_book(self, json_node):
@@ -77,6 +81,10 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
 
 
 if __name__ == '__main__':
+    fileConfig('../logging_config.txt')
+    # logging.basicConfig(level=logging.INFO)
+    logging.getLogger().info('asdfasdfsdf')
+
     connector = BinancePublicConnector()
     t1 = threading.Thread(target=connector.start)
     t1.start()
