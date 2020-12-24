@@ -1,8 +1,8 @@
 import abc
 import threading
 import time
-from logging.config import fileConfig
 from commons.callback import callback_test
+from commons.logger_settings import console_logger_settings
 
 
 class EmptyPublicConnector(metaclass=abc.ABCMeta):
@@ -34,7 +34,7 @@ class EmptyPublicConnector(metaclass=abc.ABCMeta):
 
 
 if __name__ == '__main__':
-    fileConfig('../logging_config.txt')
+    console_logger_settings()
     connector = EmptyPublicConnector()
     print(connector.is_connect)
     t1 = threading.Thread(target=connector.start)

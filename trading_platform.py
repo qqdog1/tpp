@@ -1,4 +1,4 @@
-from logging.config import fileConfig
+from commons.logger_settings import import_default_logger_settings
 from engine.trading_controller import TradingController
 
 
@@ -16,15 +16,17 @@ class TradingPlatform:
 
 
 if __name__ == '__main__':
-    fileConfig('logging_config.txt')
+    import_default_logger_settings()
     trading_platform = TradingPlatform()
+    print('input start plus strategy_name or stop plus strategy_name to operate your strategy')
+    print('or exit to exit the program')
 
     while True:
-        name = input('input start or stop plus strategy name: ')
+        name = input('> ')
         action = name.split(' ')
         if action[0] == 'start':
             trading_platform.start_strategy(action[1])
         elif action[0] == 'stop':
             trading_platform.stop_strategy(action[1])
-
-
+        elif action[0] == 'exit':
+            exit()

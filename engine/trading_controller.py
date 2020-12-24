@@ -29,8 +29,9 @@ class TradingController:
     def register_strategy(self, strategy_name: str):
         if strategy_name not in self._strategy_dict.keys():
             strategy = self._strategy_factory.get_strategy(strategy_name, self._trading_elements)
-            self._strategy_dict[strategy_name] = strategy
-            self._run_strategy(strategy)
+            if strategy is not None:
+                self._strategy_dict[strategy_name] = strategy
+                self._run_strategy(strategy)
         else:
             logging.warning(strategy_name + 'strategy is already running.')
 
