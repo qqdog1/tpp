@@ -12,16 +12,19 @@ class TradingPlatform:
         self._trading_controller.register_strategy(strategy_name)
 
     def stop_strategy(self, strategy_name: str):
-        self._trading_controller.stop(
+        self._trading_controller.stop_strategy(strategy_name)
 
 
 if __name__ == '__main__':
     set_logger_by_config()
     trading_platform = TradingPlatform()
-    name = input('input start or stop plus strategy name: ')
-    action = name.split(' ')
-    if action[0] == 'start':
-        trading_platform.start_strategy(name)
-    elif:
-        trading_platform.stop_strategy(name)
+
+    while True:
+        name = input('input start or stop plus strategy name: ')
+        action = name.split(' ')
+        if action[0] == 'start':
+            trading_platform.start_strategy(name)
+        elif:
+            trading_platform.stop_strategy(name)
+
 
