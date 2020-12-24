@@ -36,6 +36,7 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
         self._ws.keep_running = False
 
     def subscribe(self, market: str, callback):
+        # 要有queue 如果is connect = false, 變true要幫subscribe queue
         symbol = market.replace('-', '').lower()
         self._callback_dict[symbol] = callback
         self._symbol_market_dict[symbol] = market

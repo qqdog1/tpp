@@ -1,3 +1,5 @@
+import logging
+
 from commons import logger_settings
 from engine.trading_controller import TradingController
 
@@ -9,6 +11,7 @@ class TradingPlatform:
         self._trading_controller = TradingController().get_instance()
 
     def start_strategy(self, strategy_name: str):
+        logging.info('trying to start strategy ' + strategy_name)
         self._trading_controller.register_strategy(strategy_name)
 
     def stop_strategy(self, strategy_name: str):
