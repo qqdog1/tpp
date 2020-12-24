@@ -3,6 +3,7 @@ import threading
 import time
 from commons.callback import callback_test
 from commons.logger_settings import console_logger_settings
+from exchange_connector.supported_exchange import EMPTY
 
 
 class EmptyPublicConnector(metaclass=abc.ABCMeta):
@@ -17,7 +18,7 @@ class EmptyPublicConnector(metaclass=abc.ABCMeta):
         self._connect_status = True
         while self._connect_status:
             for market in self._callback_dict.keys():
-                self._callback_dict[market](market, 1, 2, 3, 4)
+                self._callback_dict[market](EMPTY, market, 1, 2, 3, 4)
             time.sleep(1)
 
     def stop(self):

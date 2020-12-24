@@ -1,18 +1,17 @@
 import logging
 from engine.trading_elements import TradingElements
 from strategy.simple_strategy import SimpleStrategy
+from strategy.supported_strategy import SIMPLE
 
 
 class StrategyFactory:
-    SIMPLE = 'simple'
-
     _instance = None
     _strategies_dict = {}
 
     @staticmethod
-    def get_instance(trading_elements: TradingElements):
+    def get_instance():
         if StrategyFactory._instance is None:
-            StrategyFactory(trading_elements)
+            StrategyFactory()
         return StrategyFactory._instance
 
     def __init__(self):
@@ -26,7 +25,7 @@ class StrategyFactory:
         if name in self._strategies_dict.keys():
             return self._strategies_dict[name]
 
-        if name == self.SIMPLE:
+        if name == SIMPLE:
             self._strategies_dict[name] = SimpleStrategy(trading_elements)
             return self._strategies_dict[name]
 

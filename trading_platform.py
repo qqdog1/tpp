@@ -1,4 +1,4 @@
-from commons.logger_settings import import_default_logger_settings
+from commons import logger_settings
 from engine.trading_controller import TradingController
 
 
@@ -16,7 +16,7 @@ class TradingPlatform:
 
 
 if __name__ == '__main__':
-    import_default_logger_settings()
+    logger_settings.import_default_logger_settings()
     trading_platform = TradingPlatform()
     print('input start plus strategy_name or stop plus strategy_name to operate your strategy')
     print('or exit to exit the program')

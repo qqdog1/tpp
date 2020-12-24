@@ -5,12 +5,10 @@ from commons.callback import callback_test
 from commons.logger_settings import console_logger_settings
 from exchange_connector.binance_public_connector import BinancePublicConnector
 from exchange_connector.empty_public_connector import EmptyPublicConnector
+from exchange_connector.supported_exchange import BINANCE, EMPTY
 
 
 class ConnectorFactory:
-    BINANCE = 'binance'
-    EMPTY = 'empty'
-
     _instance = None
     _connectors_dict = {}
 
@@ -31,10 +29,10 @@ class ConnectorFactory:
         if name in self._connectors_dict.keys():
             return self._connectors_dict[name]
 
-        if name == self.BINANCE:
+        if name == BINANCE:
             self._connectors_dict[name] = BinancePublicConnector()
             return self._connectors_dict[name]
-        elif name == self.EMPTY:
+        elif name == EMPTY:
             self._connectors_dict[name] = EmptyPublicConnector()
             return self._connectors_dict[name]
 
@@ -47,7 +45,7 @@ class ConnectorFactory:
 if __name__ == '__main__':
     console_logger_settings()
     factory = ConnectorFactory.get_instance()
-    connector = factory.get_public_connector(ConnectorFactory.BINANCE)
+    connector = factory.get_public_connector(BINANCE)
     # factory.get_public_connector('QQ')
 
     t1 = threading.Thread(target=connector.start)
@@ -62,6 +60,6 @@ if __name__ == '__main__':
     # cf = ConnectorFactory()
 
     # 在拿一次
-    connector2 = factory.get_public_connector(ConnectorFactory.BINANCE)
+    connector2 = factory.get_public_connector(BINANCE)
     # unsubscribe如果成功表示singleton work
     connector2.unsubscribe('BTC-USDT')

@@ -6,6 +6,7 @@ import time
 import websocket
 from commons.callback import callback_test
 from commons.logger_settings import console_logger_settings
+from exchange_connector.supported_exchange import BINANCE
 
 
 class BinancePublicConnector(metaclass=abc.ABCMeta):
@@ -76,7 +77,7 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
         topic = str(json_node['stream'])
         symbol = topic.split('@')[0]
         market = self._symbol_market_dict[symbol]
-        self._callback_dict[symbol](market, json_node['data']['bids'][0][0], json_node['data']['bids'][0][1],
+        self._callback_dict[symbol](BINANCE, market, json_node['data']['bids'][0][0], json_node['data']['bids'][0][1],
                                     json_node['data']['asks'][0][0], json_node['data']['asks'][0][1])
 
 

@@ -1,0 +1,2 @@
+BINANCE = 'binance'
+EMPTY = 'empty'
