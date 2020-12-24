@@ -44,3 +44,5 @@ if __name__ == '__main__':
     connector.subscribe('BTC-USDT', callback_test)
     connector.subscribe('QQaa', callback_test)
     connector.unsubscribe('QQaa')
+
+    # connector.stop()

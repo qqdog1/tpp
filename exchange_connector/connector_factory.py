@@ -5,12 +5,14 @@ import time
 from commons.callback import callback_test
 from commons.logger_settings import set_logger_by_config
 from exchange_connector.binance_public_connector import BinancePublicConnector
+from exchange_connector.empty_public_connector import EmptyPublicConnector
 from exchange_connector.max_public_connector import MaxPublicConnector
 
 
 class ConnectorFactory:
     BINANCE = 'binance'
     MAX = 'max'
+    EMPTY = 'empty'
 
     _instance = None
 
@@ -38,6 +40,10 @@ class ConnectorFactory:
         elif name == self.MAX:
             self.connectors_dist[name] = MaxPublicConnector()
             return self.connectors_dist[name]
+        elif name == self.EMPTY:
+            self.connectors_dist[name] = EmptyPublicConnector()
+            return self.connectors_dist[name]
+
         logging.error('Unknown exchange:' + name)
 
 
@@ -54,3 +60,6 @@ if __name__ == '__main__':
         time.sleep(0.1)
 
     connector.subscribe('BTC-USDT', callback_test)
+
+    # 故意在new一個instance看看
+    cf = ConnectorFactory()
