@@ -1,3 +1,4 @@
+import logging
 import threading
 import time
 
@@ -32,19 +33,19 @@ class ConnectorFactory:
             return self.connectors_dist[name]
 
         if name == self.BINANCE:
-            connector = BinancePublicConnector()
-            self.connectors_dist[name] = connector
-            return connector
+            self.connectors_dist[name] = BinancePublicConnector()
+            return self.connectors_dist[name]
         elif name == self.MAX:
-            connector = MaxPublicConnector()
-            self.connectors_dist[name] = connector
-            return connector
+            self.connectors_dist[name] = MaxPublicConnector()
+            return self.connectors_dist[name]
+        logging.error('Unknown exchange:' + name)
 
 
 if __name__ == '__main__':
     set_logger_by_config()
     factory = ConnectorFactory.get_instance()
     connector = factory.get_public_connector(ConnectorFactory.BINANCE)
+    factory.get_public_connector('QQ')
 
     t1 = threading.Thread(target=connector.start)
     t1.start()
