@@ -1,2 +1,8 @@
 class OrderManager:
-    pass
+    def send_order(self):
+        pass
+
+    def cancel_order(self):
+        pass
+
+
