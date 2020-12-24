@@ -66,10 +66,15 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
     def on_error(self):
         self.logger.info('websocket on error.')
         self.connect_status = False
+        self.reconnect()
 
     def on_close(self):
         self.logger.info('websocket closed.')
         self.connect_status = False
+        self.reconnect()
+
+    def reconnect(self):
+        pass
 
     def parse_book(self, json_node):
         print(json_node)
