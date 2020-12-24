@@ -3,13 +3,11 @@ import json
 import logging
 import threading
 import time
-from logging.config import fileConfig
 
 import websocket
 
-
-def callback_test(symbol:str, bid_price: float, bid_qty: float, ask_price: float, ask_qty: float):
-    print(symbol, ':', bid_price, '@', bid_qty, " : ", ask_price, '@', ask_qty)
+from commons.callback import callback_test
+from commons.logger_settings import set_logger_by_config
 
 
 class BinancePublicConnector(metaclass=abc.ABCMeta):
@@ -86,8 +84,7 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
 
 
 if __name__ == '__main__':
-    fileConfig('../logging_config.txt')
-    # logging.basicConfig(level=logging.INFO)
+    set_logger_by_config()
     logging.getLogger().info('asdfasdfsdf')
 
     connector = BinancePublicConnector()
