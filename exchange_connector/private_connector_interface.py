@@ -20,3 +20,6 @@ class PrivateConnectorInterface(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def cancel_order(self):
         raise NotImplementedError
+
+# 也要實作websocket 才有地方給order ack & fill
+# 也是用callback帶type回去
