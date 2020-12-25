@@ -15,10 +15,10 @@ class TradingElements:
     def get_balance(self):
         return self._order_manager.get_balance()
 
-    def get_last_buy(self, exchange: str, market: str):
+    def get_last_buy(self, exchange: str, market: str) -> [float]:
         return self._price_cache.get_last_buy(exchange, market)
 
-    def get_last_sell(self, exchange: str, market: str):
+    def get_last_sell(self, exchange: str, market: str) -> [float]:
         return self._price_cache.get_last_sell(exchange, market)
 
     def set_last_buy(self, exchange: str, market: str, price: float, qty: float):

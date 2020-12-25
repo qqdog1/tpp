@@ -2,13 +2,13 @@ class PriceCache:
     _last_buy = {}
     _last_sell = {}
 
-    def get_last_buy(self, exchange: str, market: str):
+    def get_last_buy(self, exchange: str, market: str) -> [float]:
         if exchange in self._last_buy.keys():
             if market in self._last_buy[exchange].keys():
                 return self._last_buy[exchange][market]
         return [0, 0]
 
-    def get_last_sell(self, exchange: str, market: str):
+    def get_last_sell(self, exchange: str, market: str) -> [float]:
         if exchange in self._last_sell.keys():
             if market in self._last_sell[exchange].keys():
                 return self._last_sell[exchange][market]
@@ -30,3 +30,4 @@ if __name__ == '__main__':
     print(cache.get_last_sell('QQ', 'kk'))
     cache.set_last_buy('QQ', 'kk', 9.1, 8.765)
     print(cache.get_last_buy('QQ', 'kk'))
+    print(type(cache.get_last_buy('QQ', 'kk')[0]))

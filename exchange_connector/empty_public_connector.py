@@ -1,4 +1,5 @@
 import abc
+import random
 import threading
 import time
 from commons.callback import callback_test
@@ -10,15 +11,16 @@ class EmptyPublicConnector(metaclass=abc.ABCMeta):
     _connect_status = False
     _callback_dict = {}
 
-    @property
     def is_connect(self):
         return self._connect_status
 
     def start(self):
         self._connect_status = True
         while self._connect_status:
+            price = random.uniform(8000, 10000)
+            qty = random.uniform(0.5, 3)
             for market in self._callback_dict.keys():
-                self._callback_dict[market](EMPTY, market, 1, 2, 3, 4)
+                self._callback_dict[market](EMPTY, market, price, qty, price + 100, qty + 1)
             time.sleep(1)
 
     def stop(self):

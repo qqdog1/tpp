@@ -22,6 +22,10 @@ class PublicConnectorInterface(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def is_connect(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def subscribe(self, market: str):
         raise NotImplementedError
 

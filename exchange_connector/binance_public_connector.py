@@ -25,7 +25,6 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
         )
         self._ws.on_open = self.on_open
 
-    @property
     def is_connect(self):
         return self._connect_status
 
@@ -78,8 +77,11 @@ class BinancePublicConnector(metaclass=abc.ABCMeta):
         topic = str(json_node['stream'])
         symbol = topic.split('@')[0]
         market = self._symbol_market_dict[symbol]
-        self._callback_dict[symbol](BINANCE, market, json_node['data']['bids'][0][0], json_node['data']['bids'][0][1],
-                                    json_node['data']['asks'][0][0], json_node['data']['asks'][0][1])
+        self._callback_dict[symbol](BINANCE, market,
+                                    float(json_node['data']['bids'][0][0]),
+                                    float(json_node['data']['bids'][0][1]),
+                                    float(json_node['data']['asks'][0][0]),
+                                    float(json_node['data']['asks'][0][1]))
 
 
 if __name__ == '__main__':

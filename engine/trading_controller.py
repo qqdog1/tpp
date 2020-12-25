@@ -1,5 +1,7 @@
 import logging
 import threading
+import time
+
 from engine.trading_elements import TradingElements
 from exchange_connector.connector_factory import ConnectorFactory
 from exchange_connector.public_connector_interface import PublicConnectorInterface
@@ -60,6 +62,13 @@ class TradingController:
                 connector = self._connector_factory.get_public_connector(exchange_name)
                 self._connector_dict[exchange_name] = connector
                 _run_public_connector(connector)
+
+            # start connector 到可以subscribe之間
+            # 應該是要檢查connector狀態完成才subscribe
+            # 先用thread sleep
+            while not connector.is_connect():
+                time.sleep(0.1)
+
             for market in trading_market[exchange_name]:
                 self._connector_dict[exchange_name].subscribe(market, self.on_price_update)
 
