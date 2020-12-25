@@ -58,8 +58,8 @@ class TradingController:
     def _subscribe_market(self, strategy: StrategyInterface):
         trading_market = strategy.get_trading_market()
         for exchange_name in trading_market.keys():
+            connector = self._connector_factory.get_public_connector(exchange_name)
             if exchange_name not in self._connector_dict.keys():
-                connector = self._connector_factory.get_public_connector(exchange_name)
                 self._connector_dict[exchange_name] = connector
                 _run_public_connector(connector)
 
