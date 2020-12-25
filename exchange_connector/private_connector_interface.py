@@ -16,3 +16,7 @@ class PrivateConnectorInterface(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def send_order(self):
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def cancel_order(self):
+        raise NotImplementedError
