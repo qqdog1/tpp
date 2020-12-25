@@ -3,14 +3,17 @@ import threading
 import time
 from commons.callback import callback_test
 from commons.logger_settings import console_logger_settings
+from exchange_connector.binance_private_connector import BinancePrivateConnector
 from exchange_connector.binance_public_connector import BinancePublicConnector
+from exchange_connector.empty_private_connector import EmptyPrivateConnector
 from exchange_connector.empty_public_connector import EmptyPublicConnector
 from exchange_connector.supported_exchange import BINANCE, EMPTY
 
 
 class ConnectorFactory:
     _instance = None
-    _connectors_dict = {}
+    _public_connector_dict = {}
+    _private_connector_dict = {}
 
     @staticmethod
     def get_instance():
@@ -25,21 +28,31 @@ class ConnectorFactory:
             self._id = id(self)
             ConnectorFactory._instance = self
 
-    def get_public_connector(self, name: str):
-        if name in self._connectors_dict.keys():
-            return self._connectors_dict[name]
+    def get_public_connector(self, exchange_name: str):
+        if exchange_name in self._public_connector_dict.keys():
+            return self._public_connector_dict[exchange_name]
 
-        if name == BINANCE:
-            self._connectors_dict[name] = BinancePublicConnector()
-            return self._connectors_dict[name]
-        elif name == EMPTY:
-            self._connectors_dict[name] = EmptyPublicConnector()
-            return self._connectors_dict[name]
+        if exchange_name == BINANCE:
+            self._public_connector_dict[exchange_name] = BinancePublicConnector()
+            return self._public_connector_dict[exchange_name]
+        elif exchange_name == EMPTY:
+            self._public_connector_dict[exchange_name] = EmptyPublicConnector()
+            return self._public_connector_dict[exchange_name]
 
-        logging.error('Unknown exchange:' + name)
+        logging.error('can not get public connector, unknown exchange:' + exchange_name)
 
-    def get_private_connector(self, name: str):
-        pass
+    def get_private_connector(self, exchange_name: str):
+        if exchange_name in self._private_connector_dict.keys():
+            return self._private_connector_dict[exchange_name]
+
+        if exchange_name == BINANCE:
+            self._private_connector_dict[exchange_name] = BinancePrivateConnector()
+            return self._private_connector_dict[exchange_name]
+        elif exchange_name == EMPTY:
+            self._private_connector_dict[exchange_name] = EmptyPrivateConnector()
+            return self._private_connector_dict[exchange_name]
+
+        logging.error('can not get private connector, unknown exchange:' + exchange_name)
 
 
 if __name__ == '__main__':

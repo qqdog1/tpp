@@ -24,6 +24,10 @@ class SimpleStrategy(metaclass=abc.ABCMeta):
     def start(self):
         self._running_status = True
         # while loop 可以改成讓trading controller去控制
+        self._last_balance_dict = self._trading_elements.get_balance(BINANCE)
+        if self._last_balance_dict is not None:
+            logging.info('strategy init balance: ')
+            logging.info(self._last_balance_dict)
         while self._running_status:
             self._strategy_logic()
             time.sleep(1)
@@ -35,8 +39,9 @@ class SimpleStrategy(metaclass=abc.ABCMeta):
         return self._trading_market_dict
 
     def _strategy_logic(self):
-        if not self._is_balance_growing():
-            self._force_stop()
+        # 不應該在這邊做 要在交易一個cycle後檢查
+        # if not self._is_balance_growing():
+        #     self._force_stop()
 
         buy = self._trading_elements.get_last_buy(BINANCE, 'BTC-USDT')
         sell = self._trading_elements.get_last_sell(BINANCE, 'BTC-USDT')
@@ -59,7 +64,11 @@ class SimpleStrategy(metaclass=abc.ABCMeta):
         else:
             new_balance_dict = self._trading_elements.get_balance()
             for currency in self._last_balance_dict.keys():
-                if new_balance_dict[currency] < self._last_balance_dict[currency]:
+                if currency in new_balance_dict.keys():
+                    if new_balance_dict[currency] < self._last_balance_dict[currency]:
+                        return False
+                else:
+                    # 回傳的balance連currency都不見表示被歸零了
                     return False
         return True
 
